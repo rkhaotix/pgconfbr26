@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="2.0.0-beta1" use-changelog="false" max-obj-count="7"
+	 gen-disabled-objs-code="false" show-sys-schemas-rects="true"
+	 last-position="0,0" last-zoom="1.1" scene-rect="0,0,1570.8,1076.8"
+	 default-schema="public" default-owner="postgres"
+	 layers="Default layer,rels"
+	 active-layers="0,1"
+	 layer-name-colors="#000000,#000000"
+	 layer-rect-colors="#b4b4b4,#6f116f"
+	 show-layer-names="false" show-layer-rects="false">
+<database name="rentacar" encoding="UTF8" is-template="false" allow-conns="true">
+	<role name="postgres"/>
+	<tablespace name="pg_default"/>
+</database>
+
+<schema name="public" layers="0" fill-color="#e1e1e1" name-color="#000000" sql-disabled="true">
+</schema>
+
+<usertype name="cat_veiculo" configuration="enumeration">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<enumeration label="hatch"/>
+	<enumeration label="sedan"/>
+	<enumeration label="suv"/>
+	<enumeration label="picape"/>
+	<enumeration label="minivan"/>
+	<enumeration label="esportivo"/>
+	<enumeration label="van"/>
+</usertype>
+
+<usertype name="st_veiculo" configuration="enumeration">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<enumeration label="disponivel"/>
+	<enumeration label="alugado"/>
+	<enumeration label="manutencao"/>
+	<enumeration label="inativo"/>
+</usertype>
+
+<usertype name="st_aluguel" configuration="enumeration">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<enumeration label="reservado"/>
+	<enumeration label="em_andamento"/>
+	<enumeration label="concluido"/>
+	<enumeration label="cancelado"/>
+</usertype>
+
+<usertype name="cor_veiculo" configuration="enumeration">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<enumeration label="prata"/>
+	<enumeration label="branco"/>
+	<enumeration label="preto"/>
+	<enumeration label="cinza"/>
+	<enumeration label="vermelho"/>
+	<enumeration label="azul"/>
+</usertype>
+
+<usertype name="tipo_pessoa" configuration="enumeration">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<enumeration label="F"/>
+	<enumeration label="J"/>
+</usertype>
+
+<usertype name="endereco" configuration="composite">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<typeattrib name="uf">
+		<type name="character" length="0"/>
+	</typeattrib>
+	<typeattrib name="cep">
+		<type name="character varying" length="0"/>
+	</typeattrib>
+	<typeattrib name="cidade">
+		<type name="character varying" length="0"/>
+	</typeattrib>
+	<typeattrib name="bairro">
+		<type name="character varying" length="0"/>
+	</typeattrib>
+	<typeattrib name="numero">
+		<type name="character varying" length="0"/>
+	</typeattrib>
+	<typeattrib name="logradouro">
+		<type name="character varying" length="0"/>
+	</typeattrib>
+</usertype>
+
+<domain name="email" not-null="false">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<type name="character varying" length="150"/>
+	<constraint name="email_domain_check" type="check">
+		<expression> <![CDATA[((VALUE)::text ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'::text)]]> </expression>
+	</constraint>
+</domain>
+
+<table name="montadora" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="40" y="100"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="nome" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<constraint name="montadora_pk" type="pk-constr" table="public.montadora">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="montadora_nome_uq" type="uq-constr" table="public.montadora">
+		<columns names="nome" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="modelo" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="620" y="100"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="nome" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="categoria" not-null="true">
+		<type name="public.cat_veiculo" length="0"/>
+	</column>
+	<column name="portas" not-null="true" default-value="4">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="ar_condicionado" not-null="true" default-value="true">
+		<type name="boolean" length="0"/>
+	</column>
+	<constraint name="modelo_portas_ck" type="ck-constr" table="public.modelo">
+			<expression> <![CDATA[portas >= 2]]> </expression>
+	</constraint>
+	<constraint name="modelo_pk" type="pk-constr" table="public.modelo">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="cliente" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="40" y="600"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="nome" not-null="true">
+		<type name="varchar" length="120"/>
+	</column>
+	<column name="documento" not-null="true">
+		<type name="varchar" length="20"/>
+	</column>
+	<column name="tipo_pessoa" not-null="true" default-value="'F'">
+		<type name="public.tipo_pessoa" length="0"/>
+	</column>
+	<column name="email">
+		<type name="public.email" length="0"/>
+	</column>
+	<column name="endereco" not-null="true">
+		<type name="public.endereco" length="0"/>
+	</column>
+	<column name="data_cadastro" not-null="true" default-value="CURRENT_TIMESTAMP">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<constraint name="cliente_pk" type="pk-constr" table="public.cliente">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="cliente_documento_uq" type="uq-constr" table="public.cliente">
+		<columns names="documento" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="veiculo" layers="0" collapse-mode="2" max-obj-count="9" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1200" y="100"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="placa" not-null="true">
+		<type name="character" length="7"/>
+	</column>
+	<column name="cor" not-null="true">
+		<type name="public.cor_veiculo" length="0"/>
+	</column>
+	<column name="ano_fabricacao" not-null="true">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="km_rodados" not-null="true" default-value="0">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="status" not-null="true" default-value="'disponivel'">
+		<type name="public.st_veiculo" length="0"/>
+	</column>
+	<column name="data_aquisicao" not-null="true" default-value="CURRENT_DATE">
+		<type name="date" length="0"/>
+	</column>
+	<column name="valor_diaria_base" not-null="true">
+		<type name="numeric" length="10" precision="2"/>
+	</column>
+	<constraint name="veiculo_km_rodados_ck" type="ck-constr" table="public.veiculo">
+			<expression> <![CDATA[km_rodados >= 0]]> </expression>
+	</constraint>
+	<constraint name="veiculo_valor_diaria_base_ck" type="ck-constr" table="public.veiculo">
+			<expression> <![CDATA[valor_diaria_base > 0]]> </expression>
+	</constraint>
+	<constraint name="veiculo_pk" type="pk-constr" table="public.veiculo">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="veiculo_placa_uq" type="uq-constr" table="public.veiculo">
+		<columns names="placa" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="aluguel" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="640" y="500"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="data_inicio" not-null="true">
+		<type name="date" length="0"/>
+	</column>
+	<column name="data_fim" not-null="true">
+		<type name="date" length="0"/>
+	</column>
+	<column name="valor_diaria" not-null="true">
+		<type name="numeric" length="10" precision="2"/>
+	</column>
+	<column name="status" not-null="true" default-value="'reservado'">
+		<type name="public.st_aluguel" length="0"/>
+	</column>
+	<column name="data_registro" not-null="true" default-value="CURRENT_TIMESTAMP">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<constraint name="aluguel_valor_diaria_ck" type="ck-constr" table="public.aluguel">
+			<expression> <![CDATA[valor_diaria > 0]]> </expression>
+	</constraint>
+	<constraint name="aluguel_datas_ck" type="ck-constr" table="public.aluguel">
+			<expression> <![CDATA[data_fim >= data_inicio]]> </expression>
+	</constraint>
+	<constraint name="aluguel_pk" type="pk-constr" table="public.aluguel">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="manutencao_veiculo" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1180" y="600"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS" start="1" increment="1" min-value="1" max-value="2147483647" cache="1">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="data_manutencao" not-null="true" default-value="CURRENT_DATE">
+		<type name="date" length="0"/>
+	</column>
+	<column name="descricao" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="custo" not-null="true">
+		<type name="numeric" length="10" precision="2"/>
+	</column>
+	<column name="tipo" not-null="true">
+		<type name="varchar" length="50"/>
+	</column>
+	<constraint name="manutencao_veiculo_custo_ck" type="ck-constr" table="public.manutencao_veiculo">
+			<expression> <![CDATA[custo >= 0]]> </expression>
+	</constraint>
+	<constraint name="manutencao_veiculo_pk" type="pk-constr" table="public.manutencao_veiculo">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+</dbmodel>
